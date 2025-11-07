@@ -55,7 +55,7 @@ const form = useForm({
                 
                 <div class="space-y-2">
                     <Label for="user password">Password</Label>
-                    <Input type="password" v-model="form.password" placeholder="use strong unique password"></Input>                
+                    <Input type="password" v-model="form.password" placeholder="update with strong unique password"></Input>                
                     <div v-if="form.errors.password" class="text-red-500">{{ form.errors.password }}</div>
                 </div>
 
