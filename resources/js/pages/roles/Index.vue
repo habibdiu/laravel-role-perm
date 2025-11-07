@@ -20,7 +20,8 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 interface Role{
     id: number,
-    name: string
+    name: string,
+    permissions: string,
 }
 interface props{
     role: Role[]
@@ -48,6 +49,7 @@ function deleteRole(id: number){
                     <TableRow>
                     <TableHead>ID</TableHead>
                     <TableHead>Name</TableHead>
+                    <TableHead>Permisssions</TableHead>
                     <TableHead class="text-center">Action</TableHead>
                     
                     </TableRow>
@@ -56,6 +58,12 @@ function deleteRole(id: number){
                     <TableRow v-for="role in props.role" :key="role.id">
                     <TableCell>{{ role.id }}</TableCell>
                     <TableCell  className="font-medium">{{ role.name }}</TableCell>
+                    <TableCell>
+                        <span v-for="permission in role.permissions"
+                        class="mr-1 text-green-800 px-2.5 py-2.5">
+                            {{ permission.name }}
+                        </span>
+                    </TableCell>
                     <TableCell class="text-center space-x-2">
                         <Link :href="roles.show(role.id)"><Button class="bg-blue-600"><Eye /></Button></Link>
                         <Link :href="roles.edit(role.id)"><Button class="bg-green-600"><Pencil /></Button></Link>

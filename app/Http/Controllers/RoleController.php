@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
@@ -14,7 +15,7 @@ class RoleController extends Controller
     public function index()
     {
         return Inertia::render('roles/Index',[
-            'role' => Role::all()
+            'role' => Role::with('permissions')->get()
         ]);
     }
 
@@ -23,7 +24,9 @@ class RoleController extends Controller
      */
     public function create()
     {
-        return Inertia::render("roles/Create",[]);
+        return Inertia::render("roles/Create",[
+            'permissions' => Permission::pluck('name')->all(),
+        ]);
     }
 
     /**
@@ -31,7 +34,15 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
+        $request->validate([
+            'name'=>'required',
+            'permission'=> 'required',
+        ]);
+
+        $role = Role::create(['name'=>$request->name]);
+        $role->syncPermissions($request->permission);
+
+        return redirect(route('roles.index'))->with('message', 'Successfully roles added');
     }
 
     /**
@@ -47,7 +58,12 @@ class RoleController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $role= Role::findOr($id);
+        return Inertia::render("roles/Edit",[
+            'role'=> $role,
+            'rolePermissions' => $role->permissions()->pluck('name')->all(),
+            'permissions' => Permission::pluck('name')->all(),
+        ]);
     }
 
     /**
