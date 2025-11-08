@@ -26,7 +26,7 @@ const props = defineProps<props>();
 
 const form = useForm({
   name: '',
-  permission: [],
+  permissions: [],
 })
 
 </script>
@@ -51,7 +51,7 @@ const form = useForm({
                         class="flex item-center space-x-2">
                         <input 
                         :value="permission"
-                        v-model="form.permission"
+                        v-model="form.permissions"
                         type="checkbox"
                         >
                         <span class="capitalize">{{ permission }}</span>

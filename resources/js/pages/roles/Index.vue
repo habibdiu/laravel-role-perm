@@ -60,7 +60,7 @@ function deleteRole(id: number){
                     <TableCell  className="font-medium">{{ role.name }}</TableCell>
                     <TableCell>
                         <span v-for="permission in role.permissions"
-                        class="mr-1 text-green-800 bg-gary-600 px-2.5 py-2.5">
+                        class="mr-1 text-green-800 px-2.5 py-2.5">
                             {{ permission.name }}
                         </span>
                     </TableCell>
