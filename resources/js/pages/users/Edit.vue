@@ -7,6 +7,7 @@ import { Head } from '@inertiajs/vue3';
 import Input from '@/components/ui/input/Input.vue';
 import Label from '@/components/ui/label/Label.vue';
 import Button from '@/components/ui/button/Button.vue';
+import roles from '@/routes/roles';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -16,6 +17,8 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 const props = defineProps({
     user: Object,
+    roles: Array,
+    userRoles: Array,
 
 });
 
@@ -31,6 +34,7 @@ const form = useForm({
   name: props.user.name,
   email: props.user.email,
   password: '',
+  roles: props.userRoles || [],
 })
 
 </script>
@@ -57,6 +61,22 @@ const form = useForm({
                     <Label for="user password">Password</Label>
                     <Input type="password" v-model="form.password" placeholder="update with strong unique password"></Input>                
                     <div v-if="form.errors.password" class="text-red-500">{{ form.errors.password }}</div>
+                </div>
+
+                <div class="flex flex-col gap-6">
+
+                    Roles:
+                    <label v-for="role in props.roles"
+                    class="flex item-center space-x-2">
+                    <input 
+                    :value="role"
+                    v-model="form.roles"
+                    type="checkbox"
+                    >
+                    <span class="capitalize">{{ role }}</span>
+
+                    </label>                  
+                    <div v-if="form.errors.roles" class="text-red-500">{{ form.errors.roles }}</div>
                 </div>
 
                 <div>

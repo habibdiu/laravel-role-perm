@@ -14,10 +14,20 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: '/users/create',
     },
 ];
+interface Role{
+    id: number,
+    name: string,
+}
+interface props{
+    roles: Role[],
+}
+const props = defineProps<props>();
+
 const form = useForm({
   name: '',
   email: '',
   password: '',
+  roles: [],
 })
 
 </script>
@@ -44,6 +54,22 @@ const form = useForm({
                     <Label for="user password">Password</Label>
                     <Input type="password" v-model="form.password" placeholder="use strong unique password"></Input>                
                     <div v-if="form.errors.password" class="text-red-500">{{ form.errors.password }}</div>
+                </div>
+
+                <div class="flex flex-col gap-6">
+
+                    Roles:
+                    <label v-for="role in roles"
+                    class="flex item-center space-x-2">
+                    <input 
+                    :value="role"
+                    v-model="form.roles"
+                    type="checkbox"
+                    >
+                    <span class="capitalize">{{ role }}</span>
+
+                    </label>                  
+                    <div v-if="form.errors.roles" class="text-red-500">{{ form.errors.roles }}</div>
                 </div>
 
                 <div>

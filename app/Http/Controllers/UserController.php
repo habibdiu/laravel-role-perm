@@ -5,9 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-
 use function Pest\Laravel\delete;
+
+use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -17,7 +18,7 @@ class UserController extends Controller
     public function index()
     {
         return Inertia::render('users/Index',[
-            'users'=> User::all()
+            'users'=> User::with('roles')->get(),
         ]);
     }
 
@@ -26,7 +27,9 @@ class UserController extends Controller
      */
     public function create()
     {
-        return Inertia::render('users/Create',[]);
+        return Inertia::render('users/Create',[
+            'roles' => Role::pluck('name')->all(),
+        ]);
     }
 
     /**
@@ -40,8 +43,10 @@ class UserController extends Controller
             'password'=> 'required'
         ]);
         
-        User::create($request->only(['name','email'])+
+        $user = User::create($request->only(['name','email'])+
         ['password'=>Hash::make($request->password)]);
+
+        $user->syncRoles($request->roles);
 
         return redirect(route('users.index'))->with('message','User created sucessfully');
     }
@@ -61,8 +66,11 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
+        $user = User::findOr($id);
         return Inertia::render('users/Edit',[
-            'user'=> User::findOr($id),
+            'user'=> $user,
+            'userRoles'=>$user->roles()->pluck('name')->all(),
+            'roles' => Role::pluck('name')->all(),
         ]);
     }
 
@@ -86,6 +94,7 @@ class UserController extends Controller
         }
 
         $user->save();
+        $user->syncRoles($request->roles);
 
         return redirect(route('users.index'))->with('message', 'suceessfully updated');
     }
