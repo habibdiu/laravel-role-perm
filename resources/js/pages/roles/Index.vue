@@ -42,7 +42,7 @@ function deleteRole(id: number){
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="p-4">
-            <div v-if="can(roles.create)" class="mt-3 mb-3">
+            <div  v-if="can('roles.create')"  class="mt-3 mb-3">
                 <Link :href="create()" class="bg-green-500"> <Button>Add role</Button></Link>
             </div>
             <Table class="table">
@@ -66,9 +66,9 @@ function deleteRole(id: number){
                         </span>
                     </TableCell>
                     <TableCell class="text-center space-x-2">
-                        <Link v-if="can(roles.show)" :href="roles.show(role.id)"><Button class="bg-blue-600"><Eye /></Button></Link>
-                        <Link v-if="can(roles.edit)" :href="roles.edit(role.id)"><Button class="bg-green-600"><Pencil /></Button></Link>
-                        <Button v-if="can(roles.destroy)" @click="deleteRole(role.id)" class="bg-red-600"><Trash /></Button>
+                        <Link v-if="can('roles.show')" :href="roles.show(role.id)"><Button class="bg-blue-600"><Eye /></Button></Link>
+                        <Link v-if="can('roles.edit')" :href="roles.edit(role.id)"><Button class="bg-green-600"><Pencil /></Button></Link>
+                        <Button v-if="can('roles.destroy')" @click="deleteRole(role.id)" class="bg-red-600"><Trash /></Button>
                     </TableCell>
 
                     </TableRow>
